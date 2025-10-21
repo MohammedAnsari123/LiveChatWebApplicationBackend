@@ -15,12 +15,13 @@ const app = express();
 const httpServer = createServer(app);
 
 // Allowed origins for CORS
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'https://live-chat-web-application-frontend-jf27tw4dl.vercel.app',
-  process.env.FRONTEND_URL
-].filter(Boolean);
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',')
+  : [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'https://live-chat-web-application-frontend-jf27tw4dl.vercel.app'
+    ];
 
 // Socket.io setup with CORS
 const io = new Server(httpServer, {
