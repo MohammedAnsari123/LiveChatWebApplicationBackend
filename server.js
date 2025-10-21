@@ -20,7 +20,7 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   : [
       'http://localhost:5173',
       'http://localhost:5174',
-      'https://live-chat-web-application-frontend-jf27tw4dl.vercel.app'
+      'https://live-chat-web-application-frontend-jf27tw4dl.vercel.app/'
     ];
 
 // Socket.io setup with CORS
