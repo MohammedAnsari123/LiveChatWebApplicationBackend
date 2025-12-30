@@ -16,6 +16,10 @@ The server-side application for ModernLiveChat, a real-time messaging and social
     - View global social feed.
 - **Image Upload**: Server-side image upload handling using Multer and Cloudinary.
 - **User Profile**: Update profile details and profile picture.
+- **Detailed Admin Panel**:
+    - Separate Admin Authentication (Registration with Secret Key).
+    - Dashboard with Real-time Statistics.
+    - User, Post, and Group Management (CRUD operations).
 - **Error Handling**: Centralized error handling middleware.
 
 ## 🛠️ Tech Stack
@@ -32,10 +36,10 @@ The server-side application for ModernLiveChat, a real-time messaging and social
 ```
 server/
 ├── config/             # Database and Cloudinary configuration
-├── controllers/        # Request logic (Auth, Chat, Message, Post)
-├── middleware/         # Auth protection & Error handling
-├── models/             # Mongoose schemas (User, Chat, Message, Post)
-├── routes/             # API interactions
+├── controllers/        # Request logic (Auth, Chat, Message, Post, Admin)
+├── middleware/         # Auth protection, Error handling, Admin protection
+├── models/             # Mongoose schemas (User, Chat, Message, Post, Admin)
+├── routes/             # API interactions (including adminRoutes)
 ├── socket/             # Socket.io connection logic
 └── server.js           # Entry point
 ```
@@ -49,7 +53,9 @@ PORT=5000
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 NODE_ENV=development
-FRONTEND_URL=http://localhost:5173
+FRONTEND_URL=https://your-frontend-url.com
+ADMIN_FRONTEND_URL=http://localhost:5173
+ADMIN_SECRET=your_admin_registration_secret
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
@@ -80,6 +86,16 @@ BACKEND_URL=http://localhost:5000
 - `POST /api/auth/login` - Login user
 - `GET /api/auth?search=query` - Search users
 - `PUT /api/auth/profile` - Update user profile
+
+### Admin (Protected)
+- `POST /api/admin/register` - Register new admin (requires secret)
+- `POST /api/admin/login` - Admin login
+- `GET /api/admin/stats` - Fetch dashboard statistics
+- `GET /api/admin/users` - List all users
+- `DELETE /api/admin/users/:id` - Delete a user
+- `GET /api/admin/posts` - List all posts
+- `DELETE /api/admin/posts/:id` - Delete a post
+- `GET /api/admin/groups` - List all groups
 
 ### Chat
 - `POST /api/chat` - Access or create one-on-one chat
