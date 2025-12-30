@@ -14,7 +14,28 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+
+const normalizeOrigin = (url) => url ? url.replace(/\/$/, "") : "";
+
+const allowedOrigins = [
+    normalizeOrigin(process.env.FRONTEND_URL),
+    normalizeOrigin(process.env.ADMIN_FRONTEND_URL),
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.log("Blocked by CORS:", origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
 
 // Basic Route
 app.get("/", (req, res) => {
@@ -27,6 +48,7 @@ app.use("/api/chat", require("./routes/chatRoutes"));
 app.use("/api/message", require("./routes/messageRoutes"));
 app.use("/api/posts", require("./routes/postRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
+app.use("/api/admin", require("./routes/adminRoutes"));
 
 // Error Handling
 app.use(notFound);
@@ -37,4 +59,4 @@ const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, console.log(`Server started on PORT ${PORT}`));
 
 // Initialize Socket.io
-setupSocket(server, process.env.FRONTEND_URL);
+setupSocket(server, allowedOrigins);
