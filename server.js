@@ -18,6 +18,10 @@ app.use(express.json());
 const normalizeOrigin = (url) => url ? url.replace(/\/$/, "") : "";
 
 const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://modren-live-chat-web-application.vercel.app",
+    "https://live-chat-web-application-frontend.vercel.app",
     normalizeOrigin(process.env.FRONTEND_URL),
     normalizeOrigin(process.env.ADMIN_FRONTEND_URL),
 ];
